@@ -1,0 +1,65 @@
+name: Bug report
+description: A prediction, a validation failure, or a build that does not behave as documented.
+title: "[bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing this. kp1812 is a numeric library, so the most useful report is one that
+        can be re-run: the inputs, what came out, and what you expected instead. For security
+        issues, **do not file here** — see [`SECURITY.md`](../../SECURITY.md).
+
+  - type: input
+    id: version
+    attributes:
+      label: kp1812 version
+      description: e.g. `0.1.0`, or a commit SHA if built from source
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target
+    attributes:
+      label: Target
+      multiple: true
+      options:
+        - JVM (desktop / server)
+        - Android (via the jvm artifact)
+        - iOS / macOS / tvOS
+        - Linux native
+        - Windows native
+        - JS
+        - wasmJs / wasmWasi
+    validations:
+      required: true
+
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Inputs
+      description: |
+        The `TerrainPath` (distances, heights, clutter heights, zones) and every scalar you passed
+        to `P1812.predict()` / `P1812.receivedPower()`. A short profile that reproduces it is ideal;
+        a link to a file is fine for a long one.
+      render: kotlin
+    validations:
+      required: true
+
+  - type: textarea
+    id: got
+    attributes:
+      label: What came out, and what you expected
+      description: |
+        The `Prediction` fields you looked at, and the value you expected. If the expectation
+        comes from the ITU reference implementation, another tool, or a measurement, say which —
+        P.1812 is a statistical model and a prediction you disagree with is not by itself a bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: Stack trace, build log, or the equation you think is wrong.

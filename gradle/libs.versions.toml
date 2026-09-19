@@ -1,0 +1,24 @@
+[versions]
+kotlin = "2.4.20"
+# JetBrains gradle-changelog-plugin: parses and renders the hand-written
+# CHANGELOG.md. It never generates an entry from a commit.
+changelog = "2.5.0"
+dokka = "2.2.0"
+binary-compat = "0.18.2"
+kover = "0.9.9"
+vanniktech-publish = "0.37.0"
+spotless = "8.10.2"
+ktlint = "1.8.0"
+detekt = "1.23.8"
+
+# No [libraries]: kp1812 has zero runtime dependencies and uses kotlin("test").
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+vanniktech-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-publish" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+binary-compat = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compat" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }

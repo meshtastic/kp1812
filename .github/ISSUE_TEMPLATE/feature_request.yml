@@ -1,0 +1,52 @@
+name: Feature request
+description: Suggest an addition or change.
+title: "[feature] "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. The scope of this library is deliberately narrow — the
+        Recommendation, validated against its reference, with no dependencies — so say which side
+        of that line the request sits on.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What can you not do, or not do well, today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: The API as you would want to call it, if it is an API change.
+      render: kotlin
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Likely scope
+      options:
+        - "the model (a block of the Recommendation, its inputs or outputs)"
+        - "public API shape"
+        - "the conformance suite or the fixture pipeline"
+        - "a target or the build"
+        - "docs"
+        - "not sure"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Affirmations
+      options:
+        - label: I have searched existing issues.
+          required: true
+        - label: If this changes what the model computes, I can point at the Recommendation text or the reference implementation for it.
+          required: false

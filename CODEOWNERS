@@ -1,0 +1,23 @@
+# CODEOWNERS — review routing.
+# Pre-team phase: individual handles. Replace with @meshtastic/* teams once they exist.
+# See https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Catch-all
+*                            @jamesarich
+
+# The model itself, and the public API surface it exposes
+/src/commonMain/             @jamesarich
+/api/                        @jamesarich
+
+# The conformance fixtures are the contract with the ITU reference — changes here
+# mean the library is being validated against something different than before.
+/src/commonTest/             @jamesarich
+
+# Build, publishing & CI
+/build.gradle.kts            @jamesarich
+/settings.gradle.kts         @jamesarich
+/gradle/                     @jamesarich
+/.github/                    @jamesarich
+
+# Security policy
+/SECURITY.md                 @jamesarich

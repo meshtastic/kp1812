@@ -1,0 +1,65 @@
+public final class org/meshtastic/kp1812/Atmosphere {
+	public fun <init> ()V
+	public fun <init> (DDDD)V
+	public synthetic fun <init> (DDDDILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getDeltaN ()D
+	public final fun getDistanceToCoastRxKm ()D
+	public final fun getDistanceToCoastTxKm ()D
+	public final fun getN0 ()D
+}
+
+public final class org/meshtastic/kp1812/Dbm {
+	public static final synthetic fun box-impl (D)Lorg/meshtastic/kp1812/Dbm;
+	public static fun constructor-impl (D)D
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (DLjava/lang/Object;)Z
+	public static final fun equals-impl0 (DD)Z
+	public final fun getValue ()D
+	public fun hashCode ()I
+	public static fun hashCode-impl (D)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (D)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()D
+}
+
+public final class org/meshtastic/kp1812/P1812 {
+	public static final field INSTANCE Lorg/meshtastic/kp1812/P1812;
+	public static final field MAX_FREQUENCY_GHZ D
+	public static final field MIN_FREQUENCY_GHZ D
+	public final fun locationVariabilityStdDev (DDDD)D
+	public final fun predict (Lorg/meshtastic/kp1812/TerrainPath;DDDDDLorg/meshtastic/kp1812/Polarization;Lorg/meshtastic/kp1812/Atmosphere;DD)Lorg/meshtastic/kp1812/Prediction;
+	public static synthetic fun predict$default (Lorg/meshtastic/kp1812/P1812;Lorg/meshtastic/kp1812/TerrainPath;DDDDDLorg/meshtastic/kp1812/Polarization;Lorg/meshtastic/kp1812/Atmosphere;DDILjava/lang/Object;)Lorg/meshtastic/kp1812/Prediction;
+	public final fun receivedPower-mmCOCC4 (Lorg/meshtastic/kp1812/Prediction;DDD)D
+	public static synthetic fun receivedPower-mmCOCC4$default (Lorg/meshtastic/kp1812/P1812;Lorg/meshtastic/kp1812/Prediction;DDDILjava/lang/Object;)D
+}
+
+public final class org/meshtastic/kp1812/Polarization : java/lang/Enum {
+	public static final field HORIZONTAL Lorg/meshtastic/kp1812/Polarization;
+	public static final field VERTICAL Lorg/meshtastic/kp1812/Polarization;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lorg/meshtastic/kp1812/Polarization;
+	public static fun values ()[Lorg/meshtastic/kp1812/Polarization;
+}
+
+public final class org/meshtastic/kp1812/Prediction {
+	public fun <init> (DDDDDDZDD)V
+	public final fun getBasicTransmissionLossDb ()D
+	public final fun getDiffractionLossDb ()D
+	public final fun getDuctingLossDb ()D
+	public final fun getFieldStrengthDbuVPerM ()D
+	public final fun getFreeSpaceLossDb ()D
+	public final fun getLineOfSight ()Z
+	public final fun getRxHorizonKm ()D
+	public final fun getTroposcatterLossDb ()D
+	public final fun getTxHorizonKm ()D
+}
+
+public final class org/meshtastic/kp1812/TerrainPath {
+	public fun <init> ([D[D[D[I)V
+	public final fun getClutterHeightsM ()[D
+	public final fun getDistancesKm ()[D
+	public final fun getHeightsM ()[D
+	public final fun getTotalKm ()D
+	public final fun getZones ()[I
+}
+

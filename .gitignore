@@ -1,0 +1,24 @@
+# Kotlin / Gradle
+.gradle/
+build/
+out/
+local.properties
+.kotlin/
+*.class
+
+# Keep gradle-wrapper.jar (conventional to commit)
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+
+# Fixture pipeline inputs: the reference checkout and the raw captures (see scripts/README.md)
+scripts/Py1812/
+scripts/*.json
+scripts/__pycache__/
+
+# HotSpot crash and replay logs
+hs_err_pid*.log
+replay_pid*.log

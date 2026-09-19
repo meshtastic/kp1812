@@ -1,0 +1,156 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Quality gates that only need a JVM. Split out so a formatting slip fails in
+  # seconds rather than after the multiplatform matrix.
+  static:
+    name: Quality gate (spotless, detekt)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup JDK
+        # The launcher JDK. The daemon itself is pinned to 21 by
+        # gradle/gradle-daemon-jvm.properties and resolved by foojay.
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25.0.4+101.0.LTS
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          develocity-access-key: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
+
+      - name: Spotless & detekt
+        run: ./gradlew spotlessCheck detekt --stacktrace
+
+  # Cross-compiling a target is not testing it. Every target listed here EXECUTES the
+  # conformance suite against the ITU reference fixtures on its own host; none is
+  # merely built. That is why this is three runners and not one: Linux runs the
+  # JVM/JS/Wasm/linuxX64 binaries, macOS the Apple simulators, Windows the mingw one.
+  test:
+    name: Tests (${{ matrix.name }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "Linux: JVM, JS, Wasm, linuxX64"
+            os: ubuntu-latest
+            tasks: jvmTest jsNodeTest wasmJsNodeTest wasmWasiNodeTest linuxX64Test
+          - name: "macOS: macosArm64, iosSimulatorArm64, tvosSimulatorArm64"
+            os: macos-latest
+            tasks: macosArm64Test iosSimulatorArm64Test tvosSimulatorArm64Test
+          - name: "Windows: mingwX64"
+            os: windows-latest
+            tasks: mingwX64Test
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup JDK
+        # The launcher JDK. The daemon itself is pinned to 21 by
+        # gradle/gradle-daemon-jvm.properties and resolved by foojay.
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25.0.4+101.0.LTS
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          develocity-access-key: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
+
+      - name: Cache Konan (Kotlin/Native toolchain)
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            konan-${{ runner.os }}-
+
+      - name: Run the target tests
+        run: ./gradlew ${{ matrix.tasks }} --stacktrace
+        shell: bash
+
+  # The klib ABI dump covers the 12 non-JVM targets. Apple targets build nowhere but
+  # macOS, so the authoritative check runs there; release.yml requires this job and
+  # the macOS tests to be green on the commit it releases.
+  api:
+    name: ABI check (all targets, macOS)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup JDK
+        # The launcher JDK. The daemon itself is pinned to 21 by
+        # gradle/gradle-daemon-jvm.properties and resolved by foojay.
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25.0.4+101.0.LTS
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          develocity-access-key: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
+
+      - name: Cache Konan (Kotlin/Native toolchain)
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            konan-${{ runner.os }}-
+
+      - name: apiCheck
+        run: ./gradlew apiCheck --stacktrace
+
+  coverage:
+    name: Coverage (Kover -> Codecov)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup JDK
+        # The launcher JDK. The daemon itself is pinned to 21 by
+        # gradle/gradle-daemon-jvm.properties and resolved by foojay.
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25.0.4+101.0.LTS
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          develocity-access-key: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
+
+      # Kover instruments JVM bytecode only. This is NOT multiplatform coverage and
+      # is not advertised as such; the Codecov status is informational.
+      - name: Coverage report (Kover XML)
+        run: ./gradlew koverXmlReport --stacktrace
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@0b35c9ecc4f0529d0eb674914510c22f85b196b4 # v7.1.0
+        with:
+          files: build/reports/kover/report.xml
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}

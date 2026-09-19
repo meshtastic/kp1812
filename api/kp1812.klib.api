@@ -1,0 +1,91 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, mingwX64, tvosArm64, tvosSimulatorArm64, wasmJs, wasmWasi]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <org.meshtastic:kp1812>
+final enum class org.meshtastic.kp1812/Polarization : kotlin/Enum<org.meshtastic.kp1812/Polarization> { // org.meshtastic.kp1812/Polarization|null[0]
+    enum entry HORIZONTAL // org.meshtastic.kp1812/Polarization.HORIZONTAL|null[0]
+    enum entry VERTICAL // org.meshtastic.kp1812/Polarization.VERTICAL|null[0]
+
+    final val entries // org.meshtastic.kp1812/Polarization.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<org.meshtastic.kp1812/Polarization> // org.meshtastic.kp1812/Polarization.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): org.meshtastic.kp1812/Polarization // org.meshtastic.kp1812/Polarization.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<org.meshtastic.kp1812/Polarization> // org.meshtastic.kp1812/Polarization.values|values#static(){}[0]
+}
+
+final class org.meshtastic.kp1812/Atmosphere { // org.meshtastic.kp1812/Atmosphere|null[0]
+    constructor <init>(kotlin/Double = ..., kotlin/Double = ..., kotlin/Double = ..., kotlin/Double = ...) // org.meshtastic.kp1812/Atmosphere.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
+
+    final val deltaN // org.meshtastic.kp1812/Atmosphere.deltaN|{}deltaN[0]
+        final fun <get-deltaN>(): kotlin/Double // org.meshtastic.kp1812/Atmosphere.deltaN.<get-deltaN>|<get-deltaN>(){}[0]
+    final val distanceToCoastRxKm // org.meshtastic.kp1812/Atmosphere.distanceToCoastRxKm|{}distanceToCoastRxKm[0]
+        final fun <get-distanceToCoastRxKm>(): kotlin/Double // org.meshtastic.kp1812/Atmosphere.distanceToCoastRxKm.<get-distanceToCoastRxKm>|<get-distanceToCoastRxKm>(){}[0]
+    final val distanceToCoastTxKm // org.meshtastic.kp1812/Atmosphere.distanceToCoastTxKm|{}distanceToCoastTxKm[0]
+        final fun <get-distanceToCoastTxKm>(): kotlin/Double // org.meshtastic.kp1812/Atmosphere.distanceToCoastTxKm.<get-distanceToCoastTxKm>|<get-distanceToCoastTxKm>(){}[0]
+    final val n0 // org.meshtastic.kp1812/Atmosphere.n0|{}n0[0]
+        final fun <get-n0>(): kotlin/Double // org.meshtastic.kp1812/Atmosphere.n0.<get-n0>|<get-n0>(){}[0]
+}
+
+final class org.meshtastic.kp1812/Prediction { // org.meshtastic.kp1812/Prediction|null[0]
+    constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Boolean, kotlin/Double, kotlin/Double) // org.meshtastic.kp1812/Prediction.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Boolean;kotlin.Double;kotlin.Double){}[0]
+
+    final val basicTransmissionLossDb // org.meshtastic.kp1812/Prediction.basicTransmissionLossDb|{}basicTransmissionLossDb[0]
+        final fun <get-basicTransmissionLossDb>(): kotlin/Double // org.meshtastic.kp1812/Prediction.basicTransmissionLossDb.<get-basicTransmissionLossDb>|<get-basicTransmissionLossDb>(){}[0]
+    final val diffractionLossDb // org.meshtastic.kp1812/Prediction.diffractionLossDb|{}diffractionLossDb[0]
+        final fun <get-diffractionLossDb>(): kotlin/Double // org.meshtastic.kp1812/Prediction.diffractionLossDb.<get-diffractionLossDb>|<get-diffractionLossDb>(){}[0]
+    final val ductingLossDb // org.meshtastic.kp1812/Prediction.ductingLossDb|{}ductingLossDb[0]
+        final fun <get-ductingLossDb>(): kotlin/Double // org.meshtastic.kp1812/Prediction.ductingLossDb.<get-ductingLossDb>|<get-ductingLossDb>(){}[0]
+    final val fieldStrengthDbuVPerM // org.meshtastic.kp1812/Prediction.fieldStrengthDbuVPerM|{}fieldStrengthDbuVPerM[0]
+        final fun <get-fieldStrengthDbuVPerM>(): kotlin/Double // org.meshtastic.kp1812/Prediction.fieldStrengthDbuVPerM.<get-fieldStrengthDbuVPerM>|<get-fieldStrengthDbuVPerM>(){}[0]
+    final val freeSpaceLossDb // org.meshtastic.kp1812/Prediction.freeSpaceLossDb|{}freeSpaceLossDb[0]
+        final fun <get-freeSpaceLossDb>(): kotlin/Double // org.meshtastic.kp1812/Prediction.freeSpaceLossDb.<get-freeSpaceLossDb>|<get-freeSpaceLossDb>(){}[0]
+    final val lineOfSight // org.meshtastic.kp1812/Prediction.lineOfSight|{}lineOfSight[0]
+        final fun <get-lineOfSight>(): kotlin/Boolean // org.meshtastic.kp1812/Prediction.lineOfSight.<get-lineOfSight>|<get-lineOfSight>(){}[0]
+    final val rxHorizonKm // org.meshtastic.kp1812/Prediction.rxHorizonKm|{}rxHorizonKm[0]
+        final fun <get-rxHorizonKm>(): kotlin/Double // org.meshtastic.kp1812/Prediction.rxHorizonKm.<get-rxHorizonKm>|<get-rxHorizonKm>(){}[0]
+    final val troposcatterLossDb // org.meshtastic.kp1812/Prediction.troposcatterLossDb|{}troposcatterLossDb[0]
+        final fun <get-troposcatterLossDb>(): kotlin/Double // org.meshtastic.kp1812/Prediction.troposcatterLossDb.<get-troposcatterLossDb>|<get-troposcatterLossDb>(){}[0]
+    final val txHorizonKm // org.meshtastic.kp1812/Prediction.txHorizonKm|{}txHorizonKm[0]
+        final fun <get-txHorizonKm>(): kotlin/Double // org.meshtastic.kp1812/Prediction.txHorizonKm.<get-txHorizonKm>|<get-txHorizonKm>(){}[0]
+}
+
+final class org.meshtastic.kp1812/TerrainPath { // org.meshtastic.kp1812/TerrainPath|null[0]
+    constructor <init>(kotlin/DoubleArray, kotlin/DoubleArray, kotlin/DoubleArray, kotlin/IntArray) // org.meshtastic.kp1812/TerrainPath.<init>|<init>(kotlin.DoubleArray;kotlin.DoubleArray;kotlin.DoubleArray;kotlin.IntArray){}[0]
+
+    final val clutterHeightsM // org.meshtastic.kp1812/TerrainPath.clutterHeightsM|{}clutterHeightsM[0]
+        final fun <get-clutterHeightsM>(): kotlin/DoubleArray // org.meshtastic.kp1812/TerrainPath.clutterHeightsM.<get-clutterHeightsM>|<get-clutterHeightsM>(){}[0]
+    final val distancesKm // org.meshtastic.kp1812/TerrainPath.distancesKm|{}distancesKm[0]
+        final fun <get-distancesKm>(): kotlin/DoubleArray // org.meshtastic.kp1812/TerrainPath.distancesKm.<get-distancesKm>|<get-distancesKm>(){}[0]
+    final val heightsM // org.meshtastic.kp1812/TerrainPath.heightsM|{}heightsM[0]
+        final fun <get-heightsM>(): kotlin/DoubleArray // org.meshtastic.kp1812/TerrainPath.heightsM.<get-heightsM>|<get-heightsM>(){}[0]
+    final val totalKm // org.meshtastic.kp1812/TerrainPath.totalKm|{}totalKm[0]
+        final fun <get-totalKm>(): kotlin/Double // org.meshtastic.kp1812/TerrainPath.totalKm.<get-totalKm>|<get-totalKm>(){}[0]
+    final val zones // org.meshtastic.kp1812/TerrainPath.zones|{}zones[0]
+        final fun <get-zones>(): kotlin/IntArray // org.meshtastic.kp1812/TerrainPath.zones.<get-zones>|<get-zones>(){}[0]
+}
+
+final value class org.meshtastic.kp1812/Dbm { // org.meshtastic.kp1812/Dbm|null[0]
+    constructor <init>(kotlin/Double) // org.meshtastic.kp1812/Dbm.<init>|<init>(kotlin.Double){}[0]
+
+    final val value // org.meshtastic.kp1812/Dbm.value|{}value[0]
+        final fun <get-value>(): kotlin/Double // org.meshtastic.kp1812/Dbm.value.<get-value>|<get-value>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.meshtastic.kp1812/Dbm.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.meshtastic.kp1812/Dbm.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.meshtastic.kp1812/Dbm.toString|toString(){}[0]
+}
+
+final object org.meshtastic.kp1812/P1812 { // org.meshtastic.kp1812/P1812|null[0]
+    final const val MAX_FREQUENCY_GHZ // org.meshtastic.kp1812/P1812.MAX_FREQUENCY_GHZ|{}MAX_FREQUENCY_GHZ[0]
+        final fun <get-MAX_FREQUENCY_GHZ>(): kotlin/Double // org.meshtastic.kp1812/P1812.MAX_FREQUENCY_GHZ.<get-MAX_FREQUENCY_GHZ>|<get-MAX_FREQUENCY_GHZ>(){}[0]
+    final const val MIN_FREQUENCY_GHZ // org.meshtastic.kp1812/P1812.MIN_FREQUENCY_GHZ|{}MIN_FREQUENCY_GHZ[0]
+        final fun <get-MIN_FREQUENCY_GHZ>(): kotlin/Double // org.meshtastic.kp1812/P1812.MIN_FREQUENCY_GHZ.<get-MIN_FREQUENCY_GHZ>|<get-MIN_FREQUENCY_GHZ>(){}[0]
+
+    final fun locationVariabilityStdDev(kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double): kotlin/Double // org.meshtastic.kp1812/P1812.locationVariabilityStdDev|locationVariabilityStdDev(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
+    final fun predict(org.meshtastic.kp1812/TerrainPath, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double = ..., kotlin/Double = ..., org.meshtastic.kp1812/Polarization = ..., org.meshtastic.kp1812/Atmosphere = ..., kotlin/Double = ..., kotlin/Double = ...): org.meshtastic.kp1812/Prediction // org.meshtastic.kp1812/P1812.predict|predict(org.meshtastic.kp1812.TerrainPath;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;org.meshtastic.kp1812.Polarization;org.meshtastic.kp1812.Atmosphere;kotlin.Double;kotlin.Double){}[0]
+    final fun receivedPower(org.meshtastic.kp1812/Prediction, kotlin/Double, kotlin/Double = ..., kotlin/Double = ...): org.meshtastic.kp1812/Dbm // org.meshtastic.kp1812/P1812.receivedPower|receivedPower(org.meshtastic.kp1812.Prediction;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
+}
