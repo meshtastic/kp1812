@@ -17,8 +17,8 @@ plugins {
     alias(libs.plugins.changelog)
 }
 
-// GROUP / VERSION_NAME come from gradle.properties — the single coordinate source
-// the vanniktech plugin reads; mirrored onto the project for non-publish tasks.
+// GROUP and VERSION_NAME come from gradle.properties, the single coordinate source the
+// vanniktech plugin reads; they're mirrored onto the project for non-publish tasks.
 group = providers.gradleProperty("GROUP").getOrElse("org.meshtastic")
 version = providers.gradleProperty("VERSION_NAME").getOrElse("0.1.0")
 
@@ -65,8 +65,8 @@ kotlin {
         compilerOptions { freeCompilerArgs.add("-Xjdk-release=21") }
     }
 
-    // P.1812 is pure kotlin.math in commonMain on EVERY target — no expect/actual,
-    // no cinterop, no platform-specific code. IR is the only Kotlin/JS compiler in
+    // P.1812 is pure kotlin.math in commonMain on every target: no expect/actual,
+    // no cinterop, and no platform-specific code. IR is the only Kotlin/JS compiler in
     // 2.4+, so a plain `js {}` selects it.
     js {
         browser()
@@ -121,7 +121,7 @@ kotlin {
 }
 
 // Validate the full cross-platform ABI (klib/native + common), not JVM only. A JVM-only
-// dump lets the klib surface change underneath it — see AGENTS.md → Org conventions.
+// dump lets the klib surface change underneath it (AGENTS.md, Design invariants).
 apiValidation {
     @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
     klib {
@@ -226,7 +226,7 @@ mavenPublishing {
 }
 
 // Security floors for the Kotlin/JS test harness (karma/webpack/mocha stack in
-// kotlin-js-store/yarn.lock). Dev-time only — nothing here ships in published
+// kotlin-js-store/yarn.lock). They're dev-time only, and nothing here ships in published
 // artifacts. Each pin clears an open Dependabot alert; drop a resolution once
 // the transitive tree requires at least that version on its own.
 // After changing these, regenerate the lock: ./gradlew kotlinUpgradeYarnLock

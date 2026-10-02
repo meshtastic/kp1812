@@ -1,5 +1,4 @@
-# CODEOWNERS — review routing.
-# Pre-team phase: individual handles. Replace with @meshtastic/* teams once they exist.
+# Review routing, by individual handle.
 # See https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Catch-all
@@ -9,8 +8,8 @@
 /src/commonMain/             @jamesarich
 /api/                        @jamesarich
 
-# The conformance fixtures are the contract with the ITU reference — changes here
-# mean the library is being validated against something different than before.
+# The conformance fixtures are the contract with the ITU reference. A change here
+# means the library is validated against something different.
 /src/commonTest/             @jamesarich
 
 # Build, publishing & CI

@@ -48,14 +48,14 @@ jobs:
           echo "✓ version $VF"
 
           # The changelog is the third source. `getChangelog` does NOT fail when the
-          # declared version has no section — it silently returns the most recent
+          # declared version has no section. It silently returns the most recent
           # released one, which would ship the PREVIOUS release's notes as this
           # release's body. Check the heading exists here instead.
           # awk, not grep -E: the version is a literal and its dots are ERE
           # wildcards. `index($0, v) == 1` is "this line starts with exactly
           # this string", with no escaping to get wrong.
           if ! awk -v v="## [$VF]" 'index($0, v) == 1 { found = 1 } END { exit !found }' CHANGELOG.md; then
-            echo "::error::CHANGELOG.md has no '## [$VF]' section — run './gradlew patchChangelog' and commit it before releasing."
+            echo "::error::CHANGELOG.md has no '## [$VF]' section. Run './gradlew patchChangelog' and commit it before releasing."
             exit 1
           fi
           echo "✓ CHANGELOG.md has a section for $VF"
@@ -79,7 +79,7 @@ jobs:
           restore-keys: |
             konan-${{ runner.os }}-
 
-      # CI does not run on tags, and workflow_dispatch can release any ref — so the
+      # CI does not run on tags, and workflow_dispatch can release any ref, so the
       # Apple *tests* (macOS-only, and the one thing this runner cannot do) are only
       # guaranteed if the commit being released already passed them on a branch.
       - name: Require green CI on the commit being released
@@ -107,7 +107,7 @@ jobs:
               case "$CONC" in
                 success) echo "✓ $JOB passed on $SHA"; ok=1; break ;;
                 "") echo "waiting for '$JOB' on $SHA…"; sleep 30 ;;
-                *) echo "::error::'$JOB' concluded '$CONC' on $SHA — not releasing"; exit 1 ;;
+                *) echo "::error::'$JOB' concluded '$CONC' on $SHA; not releasing"; exit 1 ;;
               esac
             done
             if [ "$ok" != 1 ]; then
@@ -144,7 +144,7 @@ jobs:
 
       - name: Render release notes
         # The changelog section for this version IS the release notes. The
-        # alternative — `generate_release_notes: true` — describes the release a
+        # alternative, `generate_release_notes: true`, describes the release a
         # second time from commit titles, and the hand-written description and the
         # generated one then drift. `getChangelog` reads the same CHANGELOG.md the
         # version check above already proved has a section for this version.
@@ -166,7 +166,7 @@ jobs:
 
           EOF
           # Capture first so a Gradle failure fails this step (a pipeline would hide
-          # it — GitHub's default shell sets -e but not -o pipefail).
+          # it, since GitHub's default shell sets -e but not -o pipefail).
           NOTES=$(./gradlew --console=plain -q getChangelog --no-header --no-links)
           # `-q` silences task output, but Develocity still prints the build-scan URL
           # on its own line. `sed` rather than `grep -v`: grep exits 1 when it filters

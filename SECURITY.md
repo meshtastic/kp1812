@@ -2,19 +2,19 @@
 
 ## Reporting a vulnerability
 
-**Do not open a public GitHub issue.** Instead:
+**Do not open a public GitHub issue.** Report it privately instead:
 
-- File a private [GitHub Security Advisory](https://github.com/meshtastic/kp1812/security/advisories/new), or
-- email security@meshtastic.org.
+- File a private [GitHub Security Advisory](https://github.com/meshtastic/kp1812/security/advisories/new).
+- Email security@meshtastic.org.
 
-We aim to acknowledge reports within 5 business days and to ship a fix or
-mitigation within 90 days, depending on severity. You will be credited in the
-advisory unless you prefer to remain anonymous.
+Meshtastic aims to acknowledge reports within five business days and to ship a
+fix or mitigation within 90 days, depending on severity. The advisory credits
+you unless you'd prefer to remain anonymous.
 
 ## Supported versions
 
-kp1812 is pre-1.0. Only the latest published release receives security fixes;
-there are no long-term support branches.
+kp1812 is pre-1.0. Only the latest published release receives security fixes,
+and there are no long-term support branches.
 
 ## Threat model
 
@@ -25,16 +25,16 @@ dependencies**.
 
 That makes the realistic concerns narrow:
 
-- **Untrusted profile input.** Callers may pass terrain from a remote source.
+- **Untrusted profile input.** Callers can pass terrain from a remote source.
   The library validates path invariants (ascending distances, matching array
-  lengths, minimum point count) and parameter ranges up front and throws
-  `IllegalArgumentException` rather than producing a silent nonsense result.
-  A malformed profile should never loop forever or allocate unboundedly —
-  if you find one that does, that is a bug worth reporting here.
-- **Supply chain.** Releases are published by `.github/workflows/release.yml`
-  from a tagged commit, signed, with build provenance attested. Verify
-  signatures if you consume from Maven Central.
+  lengths, and a minimum point count) and parameter ranges up front. It throws
+  `IllegalArgumentException` rather than producing a silent nonsense result. A
+  malformed profile should never loop forever or allocate without bound, and
+  one that does is a bug worth reporting here.
+- **Supply chain.** `.github/workflows/release.yml` publishes releases from a
+  tagged commit, signed, with build provenance attested. Verify signatures if
+  you consume from Maven Central.
 
-What is explicitly **not** a security issue: a prediction you disagree with.
-P.1812 is a statistical model with substantial inherent uncertainty. Accuracy
-reports are welcome as ordinary issues.
+A prediction you disagree with isn't a security issue. P.1812 is a statistical
+model with substantial inherent uncertainty, and accuracy reports are welcome as
+ordinary issues.

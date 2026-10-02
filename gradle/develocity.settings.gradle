@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
- * Develocity — Build Scans and remote Build Cache on the OSS Community instance
+ * Develocity: Build Scans and remote Build Cache on the OSS Community instance
  * (https://community.develocity.cloud), project `meshtastic`.
  *
  * Replaces the former self-hosted HttpBuildCache: GRADLE_CACHE_URL / _USERNAME /
@@ -19,8 +19,8 @@ develocity {
         publishing.onlyIf { it.authenticated }
         // Fingerprints power cache-miss comparison (CI debugging); skip the payload locally.
         capture { fileFingerprints = isCI }
-        // Public instance: no machine identity. Constants on purpose — scans already
-        // record OS/CPU and CCUD adds CI metadata. Keep the `if` OUTSIDE the closures:
+        // Public instance: no machine identity. The constants are deliberate, since scans
+        // already record OS/CPU and CCUD adds CI metadata. Keep the `if` OUTSIDE the closures:
         // capture-free closures are what the configuration cache can serialize.
         obfuscation {
             ipAddresses { addresses -> addresses.collect { "0.0.0.0" } }

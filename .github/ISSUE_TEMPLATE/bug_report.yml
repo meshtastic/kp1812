@@ -6,15 +6,15 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for filing this. kp1812 is a numeric library, so the most useful report is one that
-        can be re-run: the inputs, what came out, and what you expected instead. For security
-        issues, **do not file here** — see [`SECURITY.md`](../../SECURITY.md).
+        kp1812 is a numeric library, so the most useful report is one that can be re-run: the
+        inputs, what came out, and what you expected instead. **Do not file security issues
+        here.** See [`SECURITY.md`](../../SECURITY.md).
 
   - type: input
     id: version
     attributes:
       label: kp1812 version
-      description: e.g. `0.1.0`, or a commit SHA if built from source
+      description: The release, such as `0.1.0`, or the commit SHA if you built from source
       placeholder: "0.1.0"
     validations:
       required: true
@@ -53,8 +53,8 @@ body:
       label: What came out, and what you expected
       description: |
         The `Prediction` fields you looked at, and the value you expected. If the expectation
-        comes from the ITU reference implementation, another tool, or a measurement, say which —
-        P.1812 is a statistical model and a prediction you disagree with is not by itself a bug.
+        comes from the ITU reference implementation, another tool, or a measurement, say which.
+        P.1812 is a statistical model, and a prediction you disagree with isn't a bug by itself.
     validations:
       required: true
 

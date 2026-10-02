@@ -1,4 +1,4 @@
-# Codecov configuration — https://docs.codecov.com/docs/codecov-yaml
+# Codecov configuration: https://docs.codecov.com/docs/codecov-yaml
 #
 # Coverage is measured by Kover on the JVM target only (Kover instruments
 # JVM/Android bytecode; Native/JS/Wasm execution is not counted). The project
@@ -16,7 +16,7 @@ coverage:
         informational: true   # no baseline yet; flip to false once history exists
     patch:
       default:
-        informational: true  # advisory only — don't block small PRs on patch noise
+        informational: true  # advisory only; don't block small PRs on patch noise
 
 comment:
   layout: "reach, diff, flags"

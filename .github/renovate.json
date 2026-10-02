@@ -1,5 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Org-wide policy for published KMP libraries — automerge baseline, 3-day soak, kotlin-toolchain and first-party holds. See meshtastic/.github:kmp-library.json for the rules and their rationale. kp1812 needs no local overrides: it has zero runtime dependencies, so everything Renovate sees here is build tooling.",
+  "description": "Org-wide policy for published KMP libraries: automerge baseline, 3-day soak, and kotlin-toolchain and first-party holds. See meshtastic/.github:kmp-library.json for the rules and their rationale. kp1812 needs no local overrides: it has zero runtime dependencies, so everything Renovate sees here is build tooling.",
   "extends": ["local>meshtastic/.github:kmp-library"]
 }

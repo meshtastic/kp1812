@@ -1,6 +1,5 @@
 <!--
-Thank you for contributing to kp1812!
-Fill out the sections below. Delete any that don't apply.
+Fill out the following sections, and delete any that don't apply.
 -->
 
 ## Summary
@@ -21,7 +20,7 @@ Fill out the sections below. Delete any that don't apply.
 
 ## Affirmations
 
-- [ ] All commits are signed off (DCO — `git commit -s`).
+- [ ] All commits are signed off for the DCO (`git commit -s`).
 - [ ] I have read [`CONTRIBUTING.md`](../CONTRIBUTING.md).
 - [ ] If this changes the public API, I ran `./gradlew apiDump` **on macOS** and committed both `api/kp1812.api` and `api/kp1812.klib.api`.
 - [ ] If this changes what the model computes, `ReferenceConformanceTest` and `EndToEndTest` still pass, and I did **not** hand-edit a generated fixture.
