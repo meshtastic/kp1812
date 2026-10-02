@@ -7,7 +7,7 @@
  * Embedded as Kotlin so the conformance suite runs on every target - Kotlin/Native
  * and wasm have no filesystem in commonTest. Stored as strings rather than
  * doubleArrayOf() literals because a literal of this size overflows the JVM 64 KB
- * limit on a class initialiser method.
+ * limit on a class initializer method.
  *
  * Reference: https://github.com/eeveetza/Py1812 at 6c9061dd022e (P.1812-8),
  * captured on macOS arm64, numpy 2.5.3; another platform moves last digits, inside tolerance.

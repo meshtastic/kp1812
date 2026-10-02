@@ -18,7 +18,7 @@ val prediction = P1812.predict(
     frequencyGhz = 0.915,
     txHeightM = 10.0,
     rxHeightM = 1.5,
-    pathCentreLatitudeDeg = 47.6,
+    pathCenterLatitudeDeg = 47.6,
 )
 
 println(prediction.basicTransmissionLossDb)

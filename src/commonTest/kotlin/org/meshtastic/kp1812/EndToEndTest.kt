@@ -47,7 +47,7 @@ class EndToEndTest {
                 txHeightM = c.htg,
                 rxHeightM = c.hrg,
                 timePercent = c.p,
-                pathCentreLatitudeDeg = c.phi,
+                pathCenterLatitudeDeg = c.phi,
                 // The reference's `pol` is 1-based: Lbc_pol[pol - 1].
                 polarization = if (c.pol == 1) Polarization.HORIZONTAL else Polarization.VERTICAL,
                 atmosphere = Atmosphere(
@@ -82,7 +82,7 @@ class EndToEndTest {
                 txHeightM = c.htg,
                 rxHeightM = c.hrg,
                 timePercent = c.p,
-                pathCentreLatitudeDeg = c.phi,
+                pathCenterLatitudeDeg = c.phi,
                 polarization = if (c.pol == 1) Polarization.HORIZONTAL else Polarization.VERTICAL,
                 atmosphere = Atmosphere(c.dn, c.n0, c.dct, c.dcr),
                 locationPercent = c.pl,
@@ -105,7 +105,7 @@ class EndToEndTest {
             txHeightM = c.htg,
             rxHeightM = c.hrg,
             timePercent = c.p,
-            pathCentreLatitudeDeg = c.phi,
+            pathCenterLatitudeDeg = c.phi,
         )
         val rx = P1812.receivedPower(prediction, txPowerDbm = 30.0, txGainDbi = 2.0, rxGainDbi = 1.0)
         assertTrue(abs(rx.value - (33.0 - prediction.basicTransmissionLossDb)) < 1e-9)

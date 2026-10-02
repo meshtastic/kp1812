@@ -139,7 +139,7 @@ tasks.withType<AbstractArchiveTask>().configureEach {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Code quality: Spotless (ktlint formatting) + detekt (static analysis). ktlint honours
+// Code quality: Spotless (ktlint formatting) + detekt (static analysis). ktlint honors
 // the repo .editorconfig, so the two share one style source of truth.
 spotless {
     kotlin {

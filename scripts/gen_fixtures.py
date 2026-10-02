@@ -4,7 +4,7 @@
 Pure Python, no numpy: this half is deterministic from the JSON, so it can run
 anywhere. The values are embedded as strings, parsed lazily by RefCall, because a
 doubleArrayOf() literal of this size overflows the JVM's 64 KB limit on a class
-initialiser.
+initializer.
 """
 import json
 import os
@@ -51,7 +51,7 @@ def main():
            " * Embedded as Kotlin so the conformance suite runs on every target - Kotlin/Native",
            " * and wasm have no filesystem in commonTest. Stored as strings rather than",
            " * doubleArrayOf() literals because a literal of this size overflows the JVM 64 KB",
-           " * limit on a class initialiser method.",
+           " * limit on a class initializer method.",
            " *",
            *provenance_lines(),
            " */",

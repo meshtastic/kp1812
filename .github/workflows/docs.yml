@@ -19,7 +19,7 @@ permissions:
   pages: write
   id-token: write
 
-# Only one deployment runs at a time; in-progress deploys are NOT cancelled so a
+# Only one deployment runs at a time; in-progress deploys are NOT canceled so a
 # concurrent push to main doesn't leave the site in a half-updated state.
 concurrency:
   group: pages

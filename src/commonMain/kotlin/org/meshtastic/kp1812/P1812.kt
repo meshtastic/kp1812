@@ -131,11 +131,11 @@ public object P1812 {
      * Predict basic transmission loss along [path].
      *
      * @param path the terrain profile
-     * @param frequencyGhz centre frequency, GHz; must be within [MIN_FREQUENCY_GHZ]..[MAX_FREQUENCY_GHZ]
+     * @param frequencyGhz center frequency, GHz; must be within [MIN_FREQUENCY_GHZ]..[MAX_FREQUENCY_GHZ]
      * @param txHeightM transmitter antenna height above ground, m
      * @param rxHeightM receiver antenna height above ground, m
      * @param timePercent percentage of time the loss is not exceeded, 1..50
-     * @param pathCentreLatitudeDeg latitude of the path centre, degrees
+     * @param pathCenterLatitudeDeg latitude of the path center, degrees
      * @param polarization signal polarization
      * @param atmosphere radiometeorological inputs
      * @param locationPercent percentage of locations, 1..99
@@ -151,7 +151,7 @@ public object P1812 {
         txHeightM: Double,
         rxHeightM: Double,
         timePercent: Double = 50.0,
-        pathCentreLatitudeDeg: Double = 0.0,
+        pathCenterLatitudeDeg: Double = 0.0,
         polarization: Polarization = Polarization.VERTICAL,
         atmosphere: Atmosphere = Atmosphere(),
         locationPercent: Double = 50.0,
@@ -182,7 +182,7 @@ public object P1812 {
         // §3.6 path zone statistics.
         val dtm = longestContDist(d, zone, ZONE_LAND_COMBINED)
         val dlm = longestContDist(d, zone, ZONE_INLAND)
-        val b0 = beta0(pathCentreLatitudeDeg, dtm, dlm)
+        val b0 = beta0(pathCenterLatitudeDeg, dtm, dlm)
         val (ae, _) = earthRadEff(atmosphere.deltaN)
         val omega = pathFraction(d, zone, ZONE_SEA) // (1)
 
@@ -268,10 +268,10 @@ public object P1812 {
     /**
      * Standard deviation of location variability, dB. Eq (68).
      *
-     * Pass the result to [predict] as `locationVariabilityDb` when modelling location
+     * Pass the result to [predict] as `locationVariabilityDb` when modeling location
      * variability; §4.8 and §4.10 of the Recommendation define when that applies.
      *
-     * @param frequencyGhz centre frequency, GHz
+     * @param frequencyGhz center frequency, GHz
      * @param rxHeightM receiver height above ground, m
      * @param clutterHeightM representative clutter height at the receiver, m
      * @param predictionResolutionM the resolution the prediction is made at, m

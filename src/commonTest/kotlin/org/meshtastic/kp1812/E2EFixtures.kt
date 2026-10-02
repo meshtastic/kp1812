@@ -9,7 +9,7 @@
  * own validation_results logs before being emitted here, so a fixture cannot silently
  * encode a value this project computed for itself.
  *
- * Emitted in chunked functions rather than one list literal: a single initialiser this
+ * Emitted in chunked functions rather than one list literal: a single initializer this
  * large overflows the JVM 64 KB method limit, and at this size it also crashed HotSpot's
  * C2 compiler (Internal Error type.cpp:1283) when the Kover agent was attached.
  *
