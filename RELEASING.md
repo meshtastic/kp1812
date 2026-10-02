@@ -8,7 +8,9 @@ maven-publish plugin, driven by `.github/workflows/release.yml`.
 The repository needs these GitHub Actions secrets (the vanniktech
 `ORG_GRADLE_PROJECT_*` convention):
 
-- `SIGNING_KEY` — the in-memory GPG signing key.
+- `SIGNING_KEY` — the org's Maven signing key `4C9706AEE7CC2A92`, ASCII-armored
+  (`gpg --armor --export-secret-keys 4C9706AEE7CC2A92`).
+- `SIGNING_PASSWORD` — that key's passphrase.
 - `OSSRH_USERNAME` / `OSSRH_PASSWORD` — Sonatype Central Portal credentials.
 - `DEVELOCITY_ACCESS_KEY` — optional; without it builds publish no scan and
   read the shared cache without writing it.
