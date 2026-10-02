@@ -27,16 +27,17 @@ println(P1812.receivedPower(prediction, txPowerDbm = 30.0, txGainDbi = 2.0).valu
 
 ## Conformance
 
-The ITU publishes a reference implementation of P.1812 with validation data for
-every intermediate quantity, so each function here is checked against it
-directly. The fixtures are calls captured from
-[`eeveetza/Py1812`](https://github.com/eeveetza/Py1812) at `6c9061dd`
-(P.1812-8) over its 19 validation profiles, plus 63 whole-model cases from
-30 MHz to 6 GHz; the worst deviation in basic transmission loss is 3.3e-9 dB.
-They are compiled into `commonTest`, so the suite runs on every target, and
-`scripts/` regenerates them from the pinned reference.
+The International Telecommunication Union (ITU) publishes a reference
+implementation of P.1812 with validation data for every intermediate quantity,
+so each function here is checked against it directly. The fixtures are calls
+captured from [`eeveetza/Py1812`](https://github.com/eeveetza/Py1812) at
+`6c9061dd` (P.1812-8) over its 19 validation profiles. Another 63 cases run the
+whole model from 30 MHz to 6 GHz, and the worst deviation in basic transmission
+loss is 3.3e-9 dB. The fixtures are compiled into `commonTest`, so the suite
+runs on every target, and `scripts/` regenerates them from the pinned
+reference.
 
-The model uses only `kotlin.math`: no `expect`/`actual`, no cinterop and no
+The model uses only `kotlin.math`: no `expect`/`actual`, no cinterop, and no
 runtime dependencies.
 
 ## Install
@@ -45,12 +46,13 @@ runtime dependencies.
 implementation("org.meshtastic:kp1812:<version>")
 ```
 
-Android consumes the `jvm` artifact; there is no Android target, which keeps
-AGP and the Android SDK out of the build.
+Android consumes the `jvm` artifact. There's no Android target, which keeps the
+Android Gradle Plugin and the Android SDK out of the build.
 
-Swift takes a static `Kp1812.xcframework` through SwiftPM. Each GitHub release
-attaches `Kp1812.xcframework.zip` and a `Package.swift` whose `binaryTarget`
-names it by URL and checksum; copy that `binaryTarget` into your own package.
+Swift takes a static `Kp1812.xcframework` through Swift Package Manager
+(SwiftPM). Each GitHub release attaches `Kp1812.xcframework.zip` and a
+`Package.swift` whose `binaryTarget` names it by URL and checksum. Copy that
+`binaryTarget` into your own package.
 
 ```swift
 .binaryTarget(
@@ -60,11 +62,11 @@ names it by URL and checksum; copy that `binaryTarget` into your own package.
 )
 ```
 
-It covers iOS 15, macOS 12 and tvOS 15, device and simulator. There is no Mac
-Catalyst or watchOS slice: Kotlin/Native has no Catalyst target. From Swift the
+It covers iOS 15, macOS 12, and tvOS 15, device and simulator. There's no Mac
+Catalyst or watchOS slice: Kotlin/Native has no Catalyst target. From Swift, the
 API is `P1812.shared.predict(...)` with every argument spelled out, since
-Objective-C export drops Kotlin defaults, and `TerrainPath` takes
-`KotlinDoubleArray`/`KotlinIntArray`.
+Objective-C export drops Kotlin defaults. `TerrainPath` takes `KotlinDoubleArray`
+and `KotlinIntArray`.
 
 ## Targets
 
@@ -80,11 +82,11 @@ diffraction, spherical-earth first-term diffraction, diffraction for p% time,
 troposcatter, ducting and layer reflection, location variability, and their
 combination into basic transmission loss and field strength.
 
-Not implemented: the ITU digital maps for `DN50`/`N050`. They are ITU copyright
+Not implemented: the ITU digital maps for `DN50`/`N050`. They're ITU copyright
 and not redistributable, so `Atmosphere` takes Δ*N* and *N*₀ directly and
 defaults to the global medians.
 
-## Licence
+## License
 
-GPL-3.0-or-later. The P.1812 algorithm is an ITU Recommendation; this is an
-independent implementation of it.
+GPL-3.0-or-later. The P.1812 algorithm is an ITU Recommendation, and kp1812 is
+an independent implementation of it.
