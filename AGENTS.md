@@ -72,6 +72,7 @@ Single-module on purpose: one small model, no `build-logic`, no BOM.
 ./gradlew jvmTest jsNodeTest wasmJsNodeTest wasmWasiNodeTest linuxX64Test   # Linux host
 ./gradlew macosArm64Test iosSimulatorArm64Test tvosSimulatorArm64Test        # macOS host
 ./gradlew mingwX64Test                                                       # Windows host
+./gradlew assembleKp1812ReleaseXCFramework && scripts/swift-package.sh <url> # SwiftPM zip + Package.swift, macOS
 ./gradlew getChangelog --unreleased --no-header --no-links                   # what a release would say
 ```
 

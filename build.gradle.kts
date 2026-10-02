@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -86,12 +87,25 @@ kotlin {
     // The nine native targets compile the same commonMain source as everything else.
     // Deliberately no androidTarget: Android consumes the jvm() artifact, which keeps
     // AGP and the Android SDK out of the build entirely (same choice as kzstd).
-    iosArm64()
-    iosSimulatorArm64()
-    iosX64()
-    macosArm64()
-    tvosArm64()
-    tvosSimulatorArm64()
+    // Swift consumes the Apple targets as one static XCFramework, which SwiftPM takes as a
+    // binaryTarget; scripts/swift-package.sh zips it and writes the manifest. Kotlin/Native
+    // has no Mac Catalyst target, so a Catalyst build cannot link it.
+    val xcf = XCFramework("Kp1812")
+    listOf(
+        iosArm64(),
+        iosSimulatorArm64(),
+        iosX64(),
+        macosArm64(),
+        tvosArm64(),
+        tvosSimulatorArm64(),
+    ).forEach { target ->
+        target.binaries.framework {
+            baseName = "Kp1812"
+            binaryOption("bundleId", "org.meshtastic.kp1812")
+            isStatic = true
+            xcf.add(this)
+        }
+    }
     linuxX64()
     linuxArm64()
     mingwX64()

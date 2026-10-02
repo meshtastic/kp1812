@@ -26,3 +26,5 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The fixture pipeline itself, under `scripts/`: capture from the reference,
   emit the Kotlin, pinned to `eeveetza/Py1812` at `6c9061dd` (P.1812-8), so a
   regeneration says what it was captured from and cannot drift silently.
+- Swift Package Manager: each release attaches a static `Kp1812.xcframework.zip`
+  (iOS 15, macOS 12, tvOS 15) and the `Package.swift` naming it.

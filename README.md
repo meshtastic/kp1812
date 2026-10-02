@@ -59,6 +59,24 @@ implementation("org.meshtastic:kp1812:<version>")
 
 Android consumes the `jvm` artifact; there is no separate Android target.
 
+Swift takes a static `Kp1812.xcframework` through SwiftPM. Each GitHub release
+attaches `Kp1812.xcframework.zip` and a `Package.swift` whose `binaryTarget`
+names it by URL and checksum; copy that `binaryTarget` into your own package.
+
+```swift
+.binaryTarget(
+    name: "Kp1812",
+    url: "https://github.com/meshtastic/kp1812/releases/download/v<version>/Kp1812.xcframework.zip",
+    checksum: "<checksum from that release's Package.swift>"
+)
+```
+
+It covers iOS 15, macOS 12 and tvOS 15, device and simulator. There is no Mac
+Catalyst or watchOS slice: Kotlin/Native has no Catalyst target. From Swift the
+API is `P1812.shared.predict(...)` with every argument spelled out, since
+Objective-C export drops Kotlin defaults, and `TerrainPath` takes
+`KotlinDoubleArray`/`KotlinIntArray`.
+
 ## Targets
 
 `jvm` · `js` · `wasmJs` · `wasmWasi` · `iosArm64` · `iosSimulatorArm64` ·
