@@ -7,12 +7,10 @@
 [![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-blue.svg?logo=kotlin)](https://kotlinlang.org)
 [![Revved up by Develocity](https://img.shields.io/badge/Revved%20up%20by-Develocity-06A0CE?logo=Gradle&labelColor=02303A)](https://community.develocity.cloud/scans?search.rootProjectNames=kp1812)
 
-**Recommendation ITU-R P.1812 in pure Kotlin Multiplatform.**
-
-A path-specific propagation prediction method for point-to-area terrestrial
-services in the frequency range 30 MHz to 6 GHz — the ITU's current model for
-exactly the question a coverage planner asks: *given this terrain profile, how
-much signal arrives over there?*
+Recommendation ITU-R P.1812 in pure Kotlin Multiplatform: path-specific
+propagation prediction for point-to-area terrestrial services from 30 MHz to
+6 GHz. Given a terrain profile, it predicts how much signal arrives at the far
+end.
 
 ```kotlin
 val prediction = P1812.predict(
@@ -27,37 +25,28 @@ println(prediction.basicTransmissionLossDb)
 println(P1812.receivedPower(prediction, txPowerDbm = 30.0, txGainDbi = 2.0).value)
 ```
 
-## Why this, and why Kotlin
+## Conformance
 
-The alternative is SPLAT!'s ITM/ITWOM — a 2011 C++ translation of 1968 FORTRAN
-that has not moved since, wrapped in per-platform native builds.
+The ITU publishes a reference implementation of P.1812 with validation data for
+every intermediate quantity, so each function here is checked against it
+directly. The fixtures are calls captured from
+[`eeveetza/Py1812`](https://github.com/eeveetza/Py1812) at `6c9061dd`
+(P.1812-8) over its 19 validation profiles, plus 63 whole-model cases from
+30 MHz to 6 GHz; the worst deviation in basic transmission loss is 3.3e-9 dB.
+They are compiled into `commonTest`, so the suite runs on every target, and
+`scripts/` regenerates them from the pinned reference.
 
-P.1812 is a maintained ITU Recommendation with something ITWOM has never had:
-**an official reference implementation and published validation data for every
-intermediate quantity.** That turns a port from a leap into a checklist. When
-`dlBull` matches and `dlSe` does not, the block of the Recommendation to
-re-read is unambiguous — rather than an aggregate pixel diff over a raster.
-
-So this is not a reimplementation held together by hope. Every function is
-checked against calls captured from the ITU reference running over its **19
-official validation profiles**, and those fixtures are compiled into
-`commonTest` so the conformance suite executes on **every target**, not just
-the JVM. The reference is [`eeveetza/Py1812`](https://github.com/eeveetza/Py1812)
-at commit `6c9061dd` (2026-08-28), which implements **P.1812-8**; the pipeline
-that captures from it is under `scripts/`.
-
-Pure `kotlin.math` throughout. No `expect`/`actual`, no cinterop, no vendored
-native library, and **zero runtime dependencies** — the same source compiles
-for JVM, Android, Apple, Linux, Windows, JS and WebAssembly.
+The model uses only `kotlin.math`: no `expect`/`actual`, no cinterop and no
+runtime dependencies.
 
 ## Install
 
 ```kotlin
-// Maven Central — the version badge above is the current release
 implementation("org.meshtastic:kp1812:<version>")
 ```
 
-Android consumes the `jvm` artifact; there is no separate Android target.
+Android consumes the `jvm` artifact; there is no Android target, which keeps
+AGP and the Android SDK out of the build.
 
 Swift takes a static `Kp1812.xcframework` through SwiftPM. Each GitHub release
 attaches `Kp1812.xcframework.zip` and a `Package.swift` whose `binaryTarget`
@@ -83,20 +72,17 @@ Objective-C export drops Kotlin defaults, and `TerrainPath` takes
 `iosX64` · `macosArm64` · `tvosArm64` · `tvosSimulatorArm64` · `linuxX64` ·
 `linuxArm64` · `mingwX64`
 
-Android consumes the `jvm` artifact, which keeps AGP and the Android SDK out
-of the build entirely.
-
 ## Scope
 
 Implemented: free-space and line-of-sight loss, β₀, effective earth radius,
 smooth-earth heights and horizon geometry, Bullington and delta-Bullington
 diffraction, spherical-earth first-term diffraction, diffraction for p% time,
-troposcatter, ducting / layer reflection, location variability, and the
-combination of all of them into basic transmission loss and field strength.
+troposcatter, ducting and layer reflection, location variability, and their
+combination into basic transmission loss and field strength.
 
-Not implemented: the ITU digital maps for `DN50`/`N050`. Those are ITU
-copyright and not redistributable, so [Atmosphere] takes Δ*N* and *N*₀
-directly and defaults to the global medians.
+Not implemented: the ITU digital maps for `DN50`/`N050`. They are ITU copyright
+and not redistributable, so `Atmosphere` takes Δ*N* and *N*₀ directly and
+defaults to the global medians.
 
 ## Licence
 
