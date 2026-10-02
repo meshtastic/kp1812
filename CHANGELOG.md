@@ -6,6 +6,22 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Breaking
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.1.0] - 2026-10-02
+
 ### Added
 
 - Initial implementation of Recommendation ITU-R P.1812-8: free-space and
@@ -28,3 +44,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   regeneration says what it was captured from and cannot drift silently.
 - Swift Package Manager: each release attaches a static `Kp1812.xcframework.zip`
   (iOS 15, macOS 12, tvOS 15) and the `Package.swift` naming it.
+
+[Unreleased]: https://github.com/meshtastic/kp1812/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/meshtastic/kp1812/commits/v0.1.0
