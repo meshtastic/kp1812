@@ -48,8 +48,7 @@ The repository needs these GitHub Actions secrets (the vanniktech
 - Then, on macOS, builds `Kp1812.xcframework` from the tag, zips it with
   `scripts/swift-package.sh`, and attaches the zip and the `Package.swift` that
   names it (URL and checksum) to the release. A re-run replaces both, so the
-  checksum always matches the zip beside it. While the repository is private,
-  SwiftPM can fetch the zip only with a GitHub token.
+  checksum always matches the zip beside it.
 
 The first release is where the Linux-publishes-all-targets shape is proven for
 this repo; kzstd verified the same shape against its 0.2.0.
