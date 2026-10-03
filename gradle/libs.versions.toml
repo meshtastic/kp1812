@@ -1,8 +1,5 @@
 [versions]
 kotlin = "2.4.20"
-# JetBrains gradle-changelog-plugin: parses and renders the hand-written
-# CHANGELOG.md. It never generates an entry from a commit.
-changelog = "2.5.0"
 dokka = "2.2.0"
 binary-compat = "0.18.2"
 kover = "0.9.10"
@@ -21,4 +18,3 @@ binary-compat = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", v
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }

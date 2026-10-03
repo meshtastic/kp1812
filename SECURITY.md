@@ -31,9 +31,10 @@ That makes the realistic concerns narrow:
   `IllegalArgumentException` rather than producing a silent nonsense result. A
   malformed profile should never loop forever or allocate without bound, and
   one that does is a bug worth reporting here.
-- **Supply chain.** `.github/workflows/release.yml` publishes releases from a
-  tagged commit, signed, with build provenance attested. Verify signatures if
-  you consume from Maven Central.
+- **Supply chain.** `.github/workflows/release.yml` publishes every artifact
+  GPG-signed, with build provenance attested for each one. The `vX.Y.Z` tag it
+  pushes is annotated and unsigned. Verify signatures if you consume from Maven
+  Central.
 
 A prediction you disagree with isn't a security issue. P.1812 is a statistical
 model with substantial inherent uncertainty, and accuracy reports are welcome as

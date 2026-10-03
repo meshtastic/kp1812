@@ -42,8 +42,11 @@ dump taken elsewhere silently drops them. Commit both `api/kp1812.api` and
   something they could have hit. Anything that moves an `api/*.api` dump always
   needs one, under `### Breaking` if the consumer has to change code rather than
   recompile. Refactors and test-only changes need none.
-- Releases are cut from `main` following `RELEASING.md`, so don't bump versions
-  in a feature PR.
+- `CHANGELOG.md` is hand-written and nothing generates it. At release
+  `scripts/changelog.sh` cuts the Unreleased section without re-rendering the
+  file, and that section is the GitHub Release body verbatim.
+- Releases are cut from `main` following [RELEASING.md](RELEASING.md), so don't
+  bump versions in a feature PR.
 
 ## Equation numbers are part of the code
 
