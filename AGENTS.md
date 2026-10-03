@@ -75,7 +75,7 @@ The repo is a single module: one small model, no `build-logic`, and no BOM.
 ./gradlew mingwX64Test                                                       # Windows host
 ./gradlew assembleKp1812ReleaseXCFramework                                   # macOS host
 scripts/swift-package.sh <ZIP_URL>                                           # SwiftPM zip and Package.swift
-./gradlew getChangelog --unreleased --no-header --no-links                   # what a release would say
+scripts/changelog.sh notes X.Y.Z                                             # what a release says
 ```
 
 `<ZIP_URL>` is the URL the zip will be served from. The daemon is pinned to
@@ -84,9 +84,9 @@ machine has none, so the launcher JDK doesn't matter.
 
 ## Publishing
 
-Maven Central via the vanniktech plugin (`org.meshtastic:kp1812`), from
-`.github/workflows/release.yml` on a `v*` tag or a manual dispatch. See
-`RELEASING.md`.
+Maven Central via the vanniktech plugin (`org.meshtastic:kp1812`). A release is
+a merged release PR plus a dispatch of `release.yml`; see `RELEASING.md`. Cut
+changelog sections with `scripts/changelog.sh`, never by re-rendering the file.
 
 ## Conventions
 

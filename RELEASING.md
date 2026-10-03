@@ -1,12 +1,14 @@
 # Releasing kp1812
 
-kp1812 publishes to Maven Central (`org.meshtastic:kp1812`) through the
-vanniktech maven-publish plugin, driven by `.github/workflows/release.yml`.
+kp1812 publishes `org.meshtastic:kp1812` to Maven Central with the vanniktech
+maven-publish plugin, from `.github/workflows/release.yml`. Each release also
+carries a static `Kp1812.xcframework.zip` and the `Package.swift` that names it,
+for SwiftPM.
 
-## One-time setup
+## Secrets
 
-The repository needs these GitHub Actions secrets, named for the vanniktech
-`ORG_GRADLE_PROJECT_*` convention:
+The repository needs these GitHub Actions secrets, passed as the vanniktech
+`ORG_GRADLE_PROJECT_*` properties:
 
 | Secret | Holds |
 | --- | --- |
@@ -21,43 +23,52 @@ Export the key with `gpg --pinentry-mode loopback --armor --export-secret-keys
 
 ## Cutting a release
 
-1. Pick the new version `X.Y.Z` (SemVer; before 1.0 a minor version can break).
-2. Set `VERSION_NAME` in `gradle.properties` **and** mirror it into `VERSION`.
-   The workflow fails unless they match.
-3. Run `./gradlew patchChangelog`. It reads `VERSION_NAME`, so step 2 comes
-   first. It moves the `## [Unreleased]` entries under a dated `## [X.Y.Z]`
-   heading, leaves an empty Unreleased behind, and writes the compare links.
-4. Review the changelog diff, which becomes the GitHub release page. The task
-   fails if Unreleased is empty (`patchEmpty = false`), because a release with
-   nothing to say skipped the changelog.
-5. If the public API changed, regenerate the dump **on macOS** (`./gradlew
+1. Pick `X.Y.Z` (SemVer; before 1.0 a minor may break).
+2. On a branch, set `VERSION` and `VERSION_NAME` in `gradle.properties` to
+   `X.Y.Z`, and run `scripts/changelog.sh cut X.Y.Z`. That moves
+   `## [Unreleased]` under a dated `## [X.Y.Z]` heading and updates the compare
+   links, touching nothing else. It refuses an empty Unreleased.
+3. If the public API changed, regenerate the dump **on macOS** (`./gradlew
    apiDump`) and commit both `api/kp1812.api` and `api/kp1812.klib.api`.
-6. Commit (signed off), open the PR, and merge it.
-7. Trigger the release: push a `vX.Y.Z` tag, or run the **Release** workflow
-   through `workflow_dispatch`, which tags for you. Tags in this org are
-   immutable.
+4. Commit `chore(release): X.Y.Z` (signed off), open the PR and merge it.
+5. `gh workflow run release.yml --repo meshtastic/kp1812 -f version=X.Y.Z`. Add
+   `-f dry_run=true` to run every gate and build everything without tagging,
+   publishing or uploading; a dry run may start from any branch. Pushing a
+   `vX.Y.Z` tag on `main` runs the same workflow.
 
-## What the workflow does
+## What the workflow checks, in order
 
-- Verifies that `VERSION`, `VERSION_NAME`, and a `## [X.Y.Z]` heading in
-  `CHANGELOG.md` agree. `getChangelog` doesn't fail on a missing section. It
-  prints the previous release instead, so the heading check is what stops that.
-- **Waits for the two macOS CI jobs** on the commit being released: the Apple
-  test binaries and the full klib ABI check. The publish runs on Linux, which
-  cross-compiles every target but can't execute the Apple tests, so this guard
-  keeps that guarantee.
-- Builds and tests everything a Linux host can run, stages the artifacts,
-  attests them, renders the changelog section into the release notes, and only
-  then publishes.
-- Is **idempotent**. It probes `repo1.maven.org` first and skips the publish if
-  `X.Y.Z` is already there, so a re-run after a partial failure is safe.
-- Then, on macOS, builds `Kp1812.xcframework` from the tag and zips it with
-  `scripts/swift-package.sh`. It attaches the zip and the `Package.swift` that
-  names it (URL and checksum) to the release. A re-run replaces both, so the
-  checksum always matches the zip beside it.
+1. The commit is on `main` (skipped for a dry run).
+2. The version equals `VERSION` and `VERSION_NAME`, and any existing `vX.Y.Z`
+   tag points at this commit.
+3. `scripts/changelog.sh notes X.Y.Z` finds a non-empty section. It becomes the
+   GitHub Release body verbatim.
+4. The two macOS CI jobs passed on this commit (`scripts/release-checks.sh
+   green-ci`): the Apple test binaries and the full klib ABI check. The workflow
+   names them, because `main` has no ruleset requiring checks. This Linux runner
+   cross-compiles every target but cannot run the Apple tests.
+5. `./gradlew build`, then `publishToMavenLocal` with signing.
+6. No staged POM or Gradle module depends on a `-SNAPSHOT`
+   (`scripts/release-checks.sh no-snapshots`). Central rejects that only after
+   upload.
+7. If `X.Y.Z` is already on `repo1.maven.org` the publish is skipped, so a
+   re-run is safe.
+
+Then it attests every staged artifact, pushes the annotated `vX.Y.Z` tag if it
+is missing, runs `publishAndReleaseToMavenCentral`, which releases the
+deployment on Central without a manual step in the portal, and creates or
+updates the GitHub Release.
+
+## XCFramework and Swift package
+
+A second job, on macOS, checks out the same commit, builds `Kp1812.xcframework`
+and zips it with `scripts/swift-package.sh`. It attests the zip and attaches it
+to the release with the `Package.swift` that names it by URL and checksum. A
+re-run replaces both, so the checksum always matches the zip beside it. A dry
+run builds and zips, and attests and uploads nothing.
 
 ## After releasing
 
-Propagation from the Central Portal to repo1 takes 10 to 30 minutes. Before a
-consumer bumps, confirm that
-`https://repo1.maven.org/maven2/org/meshtastic/kp1812-jvm/X.Y.Z/` resolves.
+`repo1.maven.org` lags the Central Portal by 10 to 30 minutes. Downstream bumps
+wait until `https://repo1.maven.org/maven2/org/meshtastic/kp1812-jvm/X.Y.Z/`
+resolves.
