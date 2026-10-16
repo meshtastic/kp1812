@@ -32,7 +32,8 @@ than against goldens this project generated for itself.
 - `scripts/` is the fixture pipeline, pinned to one commit of the ITU reference
   implementation. The reference checkout and the raw captures are gitignored. It
   also holds `swift-package.sh`, which packages the XCFramework for Swift
-  Package Manager (SwiftPM).
+  Package Manager (SwiftPM), and `apple-retag.sh`, which relabels the iOS
+  binaries as Mac Catalyst and visionOS for that XCFramework and for CI.
 
 The repo is a single module: one small model, no `build-logic`, and no BOM.
 
@@ -40,7 +41,8 @@ The repo is a single module: one small model, no `build-logic`, and no BOM.
 
 - **Pure `kotlin.math`, one `commonMain`.** No `expect`/`actual`, no cinterop,
   no vendored native code, and no runtime dependency. Every target compiles the
-  same source.
+  same source. It's also why an iOS binary runs unchanged as Mac Catalyst and
+  visionOS once `scripts/apple-retag.sh` rewrites its platform.
 - **Equation numbers are code.** Every function names the block of the
   Recommendation it implements, which is how a conformance failure is localized
   to an equation. Keep them accurate.
@@ -73,6 +75,7 @@ The repo is a single module: one small model, no `build-logic`, and no BOM.
 ./gradlew jvmTest jsNodeTest wasmJsNodeTest wasmWasiNodeTest linuxX64Test   # Linux host
 ./gradlew macosArm64Test iosSimulatorArm64Test tvosSimulatorArm64Test        # macOS host
 ./gradlew mingwX64Test                                                       # Windows host
+./gradlew linkDebugTestIosArm64 linkDebugTestIosX64 linkDebugTestIosSimulatorArm64 && scripts/apple-retag.sh test   # macOS host: Mac Catalyst, visionOS
 ./gradlew assembleKp1812ReleaseXCFramework                                   # macOS host
 scripts/swift-package.sh <ZIP_URL>                                           # SwiftPM zip and Package.swift
 scripts/changelog.sh notes X.Y.Z                                             # what a release says

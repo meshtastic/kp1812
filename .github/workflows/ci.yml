@@ -89,6 +89,15 @@ jobs:
         run: ./gradlew ${{ matrix.tasks }} --stacktrace
         shell: bash
 
+      # Mac Catalyst and visionOS ship as iOS slices relabeled by scripts/apple-retag.sh, so
+      # the suite runs relabeled the same way. The job keeps its name, which release.yml
+      # requires.
+      - name: Run the tests as Mac Catalyst and visionOS
+        if: runner.os == 'macOS'
+        run: |
+          ./gradlew linkDebugTestIosArm64 linkDebugTestIosX64 linkDebugTestIosSimulatorArm64 --stacktrace
+          scripts/apple-retag.sh test
+
   # The klib ABI dump covers the 12 non-JVM targets. Apple targets build nowhere but
   # macOS, so the authoritative check runs there; release.yml requires this job and
   # the macOS tests to be green on the commit it releases.
