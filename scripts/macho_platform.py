@@ -12,6 +12,8 @@ import struct
 import sys
 
 LC_BUILD_VERSION = 0x32
+LC_BUILD_VERSION_SIZE = 24
+LOAD_COMMAND_HEADER_SIZE = 8
 MH_MAGIC_64 = 0xFEEDFACF
 MACH_HEADER_64_SIZE = 32
 
@@ -21,13 +23,24 @@ def main():
     major, minor = (int(p) for p in minos.split("."))
     with open(path, "rb") as f:
         data = bytearray(f.read())
-    magic, _, _, _, ncmds = struct.unpack_from("<5I", data, 0)
+    if len(data) < MACH_HEADER_64_SIZE:
+        sys.exit(f"{path}: too short for a Mach-O header")
+    magic, _, _, _, ncmds, sizeofcmds = struct.unpack_from("<6I", data, 0)
     if magic != MH_MAGIC_64:
         sys.exit(f"{path}: not a thin 64-bit Mach-O")
+    end = MACH_HEADER_64_SIZE + sizeofcmds
+    if end > len(data):
+        sys.exit(f"{path}: load commands run past the end of the file")
     offset, patched = MACH_HEADER_64_SIZE, 0
     for _ in range(ncmds):
+        if offset + LOAD_COMMAND_HEADER_SIZE > end:
+            sys.exit(f"{path}: load command at {offset} runs past sizeofcmds")
         cmd, size = struct.unpack_from("<II", data, offset)
+        if size < LOAD_COMMAND_HEADER_SIZE or offset + size > end:
+            sys.exit(f"{path}: malformed cmdsize {size} at {offset}")
         if cmd == LC_BUILD_VERSION:
+            if size < LC_BUILD_VERSION_SIZE:
+                sys.exit(f"{path}: LC_BUILD_VERSION at {offset} is {size} bytes")
             struct.pack_into("<II", data, offset + 8, platform, (major << 16) | (minor << 8))
             patched += 1
         offset += size
