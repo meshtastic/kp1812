@@ -62,7 +62,8 @@ updates the GitHub Release.
 ## XCFramework and Swift package
 
 A second job, on macOS, checks out the same commit, builds `Kp1812.xcframework`
-and zips it with `scripts/swift-package.sh`. It attests the zip and attaches it
+and zips it with `scripts/swift-package.sh`, which adds the Mac Catalyst and
+visionOS slices relabeled from iOS (`scripts/apple-retag.sh`). It attests the zip and attaches it
 to the release with the `Package.swift` that names it by URL and checksum. A
 re-run replaces both, so the checksum always matches the zip beside it. A dry
 run builds and zips, and attests and uploads nothing.

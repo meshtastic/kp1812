@@ -62,8 +62,10 @@ Swift takes a static `Kp1812.xcframework` through Swift Package Manager
 )
 ```
 
-It covers iOS 15, macOS 12, and tvOS 15, device and simulator. There's no Mac
-Catalyst or watchOS slice: Kotlin/Native has no Catalyst target. From Swift, the
+It covers iOS 15, macOS 12, tvOS 15, Mac Catalyst 15, and visionOS 1, device and
+simulator. Kotlin/Native has no Catalyst or visionOS target, so those slices are
+the iOS binaries relabeled, and CI runs the conformance suite on them the same
+way. There's no watchOS slice. From Swift, the
 API is `P1812.shared.predict(...)` with every argument spelled out, since
 Objective-C export drops Kotlin defaults. `TerrainPath` takes `KotlinDoubleArray`
 and `KotlinIntArray`.

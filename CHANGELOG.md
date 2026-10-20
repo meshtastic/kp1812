@@ -6,6 +6,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- Swift Package Manager: the XCFramework adds Mac Catalyst 15 (arm64, x86_64)
+  and visionOS 1 (device and simulator) slices. Kotlin/Native has no target for
+  either, so they're the iOS binaries with the platform rewritten, and the
+  conformance suite runs on both in CI.
+
 ## [0.1.0] - 2026-10-02
 
 ### Added

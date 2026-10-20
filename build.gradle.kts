@@ -64,7 +64,8 @@ kotlin {
     // AGP and the Android SDK out of the build entirely (same choice as kzstd).
     // Swift consumes the Apple targets as one static XCFramework, which SwiftPM takes as a
     // binaryTarget; scripts/swift-package.sh zips it and writes the manifest. Kotlin/Native
-    // has no Mac Catalyst target, so a Catalyst build cannot link it.
+    // has no Mac Catalyst or visionOS target, so scripts/apple-retag.sh relabels the iOS
+    // slices as both.
     val xcf = XCFramework("Kp1812")
     listOf(
         iosArm64(),
