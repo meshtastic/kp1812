@@ -6,6 +6,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-23
+
 ### Added
 
 - Swift Package Manager: the XCFramework adds Mac Catalyst 15 (arm64, x86_64)
@@ -38,5 +40,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Swift Package Manager: each release attaches a static `Kp1812.xcframework.zip`
   (iOS 15, macOS 12, tvOS 15) and the `Package.swift` naming it.
 
-[Unreleased]: https://github.com/meshtastic/kp1812/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/meshtastic/kp1812/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/meshtastic/kp1812/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/meshtastic/kp1812/commits/v0.1.0
