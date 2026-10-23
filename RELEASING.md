@@ -24,23 +24,26 @@ Export the key with `gpg --pinentry-mode loopback --armor --export-secret-keys
 ## Cutting a release
 
 1. Pick `X.Y.Z` (SemVer; before 1.0 a minor may break).
-2. On a branch, set `VERSION` and `VERSION_NAME` in `gradle.properties` to
-   `X.Y.Z`, and run `scripts/changelog.sh cut X.Y.Z`. That moves
+2. On a branch, run `scripts/changelog.sh cut X.Y.Z`. That moves
    `## [Unreleased]` under a dated `## [X.Y.Z]` heading and updates the compare
-   links, touching nothing else. It refuses an empty Unreleased.
+   links, touching nothing else. It refuses an empty Unreleased. No file holds
+   the version: Gradle reads it from the `vX.Y.Z` tag with `git describe`, and
+   anywhere off a release tag it is the next patch as a `-SNAPSHOT`.
 3. If the public API changed, regenerate the dump **on macOS** (`./gradlew
    apiDump`) and commit both `api/kp1812.api` and `api/kp1812.klib.api`.
 4. Commit `chore(release): X.Y.Z` (signed off), open the PR and merge it.
 5. `gh workflow run release.yml --repo meshtastic/kp1812 -f version=X.Y.Z`. Add
    `-f dry_run=true` to run every gate and build everything without tagging,
    publishing or uploading; a dry run may start from any branch. Pushing a
-   `vX.Y.Z` tag on `main` runs the same workflow.
+   `vX.Y.Z` tag on `main` runs the same workflow. Dispatch right after the merge:
+   the green-CI gate waits for the macOS checks on that commit.
 
 ## What the workflow checks, in order
 
 1. The commit is on `main` (skipped for a dry run).
-2. The version equals `VERSION` and `VERSION_NAME`, and any existing `vX.Y.Z`
-   tag points at this commit.
+2. Any existing `vX.Y.Z` tag points at this commit. The workflow then tags the
+   commit locally and checks `git describe` resolves it to `vX.Y.Z`, so the
+   build stamps that version; the tag reaches origin only after every gate.
 3. `scripts/changelog.sh notes X.Y.Z` finds a non-empty section. It becomes the
    GitHub Release body verbatim.
 4. The two macOS CI jobs passed on this commit (`scripts/release-checks.sh
