@@ -1,6 +1,6 @@
 name: Release
 
-# Dispatch from main with the version a merged release PR set, or push its tag.
+# Dispatch from main with the version a merged release PR cut in CHANGELOG.md, or push its tag.
 # Every gate runs before the tag is pushed, so a refused release leaves no tag behind.
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release, e.g. 0.2.0 (must match VERSION)'
+        description: 'Version to release, e.g. 0.2.0 (needs its CHANGELOG.md section)'
         required: true
         type: string
       dry_run:
@@ -68,17 +68,11 @@ jobs:
             exit 1
           fi
 
-      - name: Verify the version sources agree
+      - name: Verify an existing tag points at this commit
         env:
           V: ${{ steps.version.outputs.version }}
         run: |
-          VF=$(tr -d '[:space:]' < VERSION)
-          VG=$(sed -n 's/^VERSION_NAME=//p' gradle.properties | tr -d '[:space:]')
-          if [ "$V" != "$VF" ] || [ "$V" != "$VG" ]; then
-            echo "::error::releasing $V, but VERSION is $VF and VERSION_NAME is $VG"
-            exit 1
-          fi
-          git fetch --quiet origin "refs/tags/v$V:refs/tags/v$V" 2>/dev/null || true
+          git fetch --quiet --force origin "refs/tags/v$V:refs/tags/v$V" 2>/dev/null || true
           if git rev-parse --quiet --verify "v$V^{commit}" >/dev/null &&
              [ "$(git rev-parse "v$V^{commit}")" != "$(git rev-parse HEAD)" ]; then
             if [ "$DRY_RUN" = true ]; then
@@ -117,6 +111,24 @@ jobs:
           scripts/release-checks.sh green-ci "$(git rev-parse HEAD)" \
             "Tests (macOS: macosArm64, iosSimulatorArm64, tvosSimulatorArm64)" \
             "ABI check (all targets, macOS)"
+
+      # The version comes from git describe (build.gradle.kts), so the tag exists locally before
+      # Gradle runs. It reaches origin only at "Push the release tag", and never on a dry run.
+      - name: Tag the release locally
+        env:
+          V: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ "$(git rev-parse --quiet --verify "v$V^{commit}")" != "$(git rev-parse HEAD)" ]; then
+            git tag -f -a "v$V" -m "v$V"
+          fi
+          DESCRIBED=$(git describe --tags --match 'v*' --exclude 'v*-*')
+          if [ "$DESCRIBED" != "v$V" ]; then
+            echo "::error::git describe resolves this commit to $DESCRIBED, not v$V"
+            exit 1
+          fi
+          echo "git describe: $DESCRIBED"
 
       - name: Setup JDK 25
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
@@ -188,14 +200,11 @@ jobs:
         env:
           V: ${{ steps.version.outputs.version }}
         run: |
-          if git rev-parse --quiet --verify "v$V" >/dev/null; then
+          if git ls-remote --exit-code --tags origin "refs/tags/v$V" >/dev/null; then
             echo "v$V already on origin"
             exit 0
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -a "v$V" -m "v$V"
-          git push origin "v$V"
+          git push origin "refs/tags/v$V"
 
       - name: Publish to Maven Central
         if: env.DRY_RUN != 'true' && steps.central.outputs.published != 'true'
@@ -259,7 +268,8 @@ jobs:
             konan-${{ runner.os }}-
 
       - name: Build the XCFramework
-        run: ./gradlew assembleKp1812ReleaseXCFramework --stacktrace
+        # This checkout carries no tag, so the version is passed rather than described.
+        run: ./gradlew assembleKp1812ReleaseXCFramework -PVERSION_NAME="$VERSION" --stacktrace
 
       - name: Zip it and write Package.swift
         run: scripts/swift-package.sh "https://github.com/${{ github.repository }}/releases/download/v${VERSION}/Kp1812.xcframework.zip"

@@ -13,10 +13,28 @@ plugins {
     alias(libs.plugins.detekt)
 }
 
-// GROUP and VERSION_NAME come from gradle.properties, the single coordinate source the
-// vanniktech plugin reads; they're mirrored onto the project for non-publish tasks.
+// The release tag is the only version source: on an exact `vX.Y.Z` tag it is X.Y.Z, elsewhere the
+// next patch as a -SNAPSHOT. -PVERSION_NAME overrides both. --exclude keeps a v0.3.0-rc1 from
+// reading as a release.
+val gitVersion: Provider<String> = providers.exec {
+    commandLine("git", "describe", "--tags", "--match", "v*", "--exclude", "v*-*")
+    isIgnoreExitValue = true
+}.standardOutput.asText.map { raw ->
+    val described = raw.trim().removePrefix("v")
+    when {
+        described.isBlank() -> "0.0.0-SNAPSHOT"
+
+        '-' in described -> {
+            val (major, minor, patch) = described.substringBefore('-').split('.').map(String::toInt)
+            "$major.$minor.${patch + 1}-SNAPSHOT"
+        }
+
+        else -> described
+    }
+}
+
 group = providers.gradleProperty("GROUP").getOrElse("org.meshtastic")
-version = providers.gradleProperty("VERSION_NAME").getOrElse("0.1.0")
+version = providers.gradleProperty("VERSION_NAME").orElse(gitVersion).get()
 
 repositories {
     mavenCentral()
