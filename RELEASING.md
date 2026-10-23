@@ -24,8 +24,8 @@ Export the key with `gpg --pinentry-mode loopback --armor --export-secret-keys
 ## Cutting a release
 
 1. Pick `X.Y.Z` (SemVer; before 1.0 a minor may break).
-2. On a branch, set `VERSION` and `VERSION_NAME` in `gradle.properties` to
-   `X.Y.Z`, and run `scripts/changelog.sh cut X.Y.Z`. That moves
+2. On a branch, set both the root `VERSION` file and `VERSION_NAME` in
+   `gradle.properties` to `X.Y.Z`, and run `scripts/changelog.sh cut X.Y.Z`. That moves
    `## [Unreleased]` under a dated `## [X.Y.Z]` heading and updates the compare
    links, touching nothing else. It refuses an empty Unreleased.
 3. If the public API changed, regenerate the dump **on macOS** (`./gradlew
